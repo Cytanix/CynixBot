@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=67.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "CynixBot"
+version = "0.0.1"
+description = "A Discord bot."
+authors = [
+    { name = "SpiritTheWalf (Spirit Pearce)", email = "spirit.pearce@gmail.com" },
+    { name = "Cytanix"}
+]
+requires-python = ">=3.13"
+
+dependencies = [
+    "discord.py>=2.6.4",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "mypy",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+# ----------------------------------------
+# Linting + Formatting
+# ----------------------------------------
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+
+select = [
+    "E",
+    "F",
+    "W",
+    "B",
+    "I",
+]
+
+ignore = [
+    "E501",
+]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# ----------------------------------------
+# Type Checking
+# ----------------------------------------
+[tool.mypy]
+python_version = "3.10"
+
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+strict_optional = true
+
+mypy_path = ["src"]
+
+ignore_missing_imports = true
