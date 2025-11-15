@@ -6,7 +6,7 @@ from typing import cast
 from dotenv import load_dotenv
 from sqlalchemy import URL, create_engine
 
-from alembic import context
+from alembic import context  # type: ignore
 from src.database.models import Base
 
 load_dotenv()
@@ -20,9 +20,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 
-
-
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src")))
 
 target_metadata = Base.metadata
 
@@ -39,6 +37,7 @@ connection_string = URL.create(
     port=int(cast(str, os.getenv("DATABASE_PORT"))),
     database=os.getenv("DATABASE"),
 )
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -74,9 +73,7 @@ def run_migrations_online() -> None:
     connectable = create_engine(connection_string)
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata, compare_type=True
-        )
+        context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
 
         with context.begin_transaction():
             context.run_migrations()
