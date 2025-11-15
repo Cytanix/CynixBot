@@ -18,6 +18,8 @@ from discord import app_commands
 from discord.ext import commands
 from dotenv import load_dotenv
 
+from src.utils.checks import app_is_owner_or_dev
+
 load_dotenv()
 
 portainer_key = {"X-API-KEY": os.getenv("PORTAINER_API_KEY")}
@@ -28,7 +30,8 @@ class Dev(commands.GroupCog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="pull")
+    @app_commands.command(name="pull", description="Pull the latest code changes from Git")
+    @app_commands.describe(restart="Restart the bot?")
     async def pull(self, inter: discord.Interaction, restart: bool) -> None:
         await inter.response.defer(thinking=True)
         await inter.followup.send("Pulling changes...")
@@ -50,6 +53,12 @@ class Dev(commands.GroupCog):
             os.execv(sys.executable, [sys.executable] + sys.argv)
 
         await inter.followup.send("Restart not requested.")
+
+    @app_is_owner_or_dev()
+    @app_commands.command(name="restart", description="Restart the bot.")
+    async def restart(self, inter: discord.Interaction) -> None:
+        await inter.response.send_message("Restarting...", ephemeral=True)
+        os.execv(sys.executable, [sys.executable] + sys.argv)
 
 
 async def setup(bot: commands.Bot) -> None:
