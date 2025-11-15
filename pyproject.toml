@@ -20,6 +20,7 @@ dependencies = [
 dev = [
     "ruff",
     "mypy",
+    "alembic",
 ]
 
 [tool.setuptools]
@@ -65,3 +66,26 @@ strict_optional = true
 mypy_path = ["src"]
 
 ignore_missing_imports = true
+
+# ----------------------------------------
+# Alembic
+# ----------------------------------------
+[tool.alembic]
+# path to migration scripts
+script_location = "%(here)s/alembic"
+
+# template used to generate migration file names; The default value is %%(rev)s_%%(slug)s
+# Uncomment the line below if you want the files to be prepended with date and time
+# file_template = %%(year)d_%%(month).2d_%%(day).2d_%%(hour).2d%%(minute).2d-%%(rev)s_%%(slug)s
+
+# additional paths to be prepended to sys.path. defaults to the current working directory.
+prepend_sys_path = [
+    "."
+]
+
+[[tool.alembic.post_write_hooks]]
+name = "ruff"
+type = "exec"
+executable = ".venv/bin/ruff"
+options = "check --fix REVISION_SCRIPT_FILENAME"
+
