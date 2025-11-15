@@ -1,12 +1,14 @@
-from logging.config import fileConfig
-
-from sqlalchemy import create_engine
-from sqlalchemy import pool, URL
-import sys
 import os
-from alembic import context
-from dotenv import load_dotenv
+import sys
+from logging.config import fileConfig
 from typing import cast
+
+from dotenv import load_dotenv
+from sqlalchemy import URL, create_engine
+
+from alembic import context
+from src.database.models import Base
+
 load_dotenv()
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -18,7 +20,8 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 
-from src.database.models import Base
+
+
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'src')))
 
 target_metadata = Base.metadata
